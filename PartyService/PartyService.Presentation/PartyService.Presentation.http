@@ -1,0 +1,6 @@
+@PartyService.Presentation_HostAddress = http://localhost:5196
+
+GET {{PartyService.Presentation_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

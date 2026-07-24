@@ -1,0 +1,10 @@
+﻿namespace GuestService.Application.Events;
+
+public class PartyCreatedEvent
+{
+    public Guid PartyId { get; set; }
+    public string BirthdayChildName { get; set; } = string.Empty;
+    public string? Title { get; set; }
+    public string? BirthdayChildPhotoUrl { get; set; }
+    public DateTime OccurredAt { get; set; }
+}

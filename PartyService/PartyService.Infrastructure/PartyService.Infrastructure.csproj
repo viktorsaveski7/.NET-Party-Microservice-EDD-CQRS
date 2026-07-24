@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<None Remove="StoredProcedures\SQL\001_sp_CreateParty.sql" />
+		<None Remove="StoredProcedures\SQL\002_sp_GetPartyById.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="StoredProcedures\SQL\*.sql" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PartyService.Application\PartyService.Application.csproj" />
+		<ProjectReference Include="..\PartyService.Domain\PartyService.Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Dapper" Version="2.1.66" />
+		<PackageReference Include="dbup" Version="5.0.41" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.11" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.3" />
+		<PackageReference Include="RabbitMQ.Client" Version="7.2.0" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+</Project>
