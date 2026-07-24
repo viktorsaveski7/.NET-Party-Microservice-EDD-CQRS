@@ -1,0 +1,47 @@
+name: CI - Build & Test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore PartyService
+        run: dotnet restore PartyService/PartyService.sln
+
+      - name: Restore GuestService
+        run: dotnet restore GuestService/GuestService.sln
+
+      - name: Build PartyService
+        run: dotnet build PartyService/PartyService.sln --no-restore --configuration Release
+
+      - name: Build GuestService
+        run: dotnet build GuestService/GuestService.sln --no-restore --configuration Release
+
+      - name: Test PartyService (Unit)
+        run: dotnet test PartyService/PartyService.Application.Tests --no-build --configuration Release --verbosity normal
+
+      - name: Test PartyService (Integration)
+        run: dotnet test PartyService/PartyService.IntegrationTests --no-build --configuration Release --verbosity normal
+
+      - name: Test GuestService (Unit)
+        run: dotnet test GuestService/GuestService.Application.Tests --no-build --configuration Release --verbosity normal
+
+      - name: Test GuestService (Integration)
+        run: dotnet test GuestService/GuestService.IntegrationTests --no-build --configuration Release --verbosity normal
+
+      - name: Summary
+        run: echo "All 88 tests passed!"

@@ -343,7 +343,6 @@ Coverage includes:
 | **Health checks**        | No `/health` endpoints; YARP has no health-check-based routing. |
 | **Authentication**       | All APIs are wide open — no JWT, OAuth, or API key protection. |
 | **Duplicate consumer**   | Both GuestService and PartyEventConsumerService compete for the same queue. Pick one model. |
-| **CI/CD**                | `.github/workflows/` directory is empty.            |
 | **Secrets in source**    | RabbitMQ credentials (`admin`/`admin123`) committed to config files. |
 
 ### Medium Priority
