@@ -131,3 +131,5 @@ app.MapControllers();
 
 Console.WriteLine("Application started successfully!");
 app.Run();
+
+public partial class Program { }

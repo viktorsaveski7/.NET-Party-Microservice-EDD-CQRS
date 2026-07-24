@@ -65,3 +65,5 @@ app.MapControllers();
 
 Console.WriteLine("Guest Service started successfully on http://localhost:5002!");
 app.Run();
+
+public partial class Program { }
