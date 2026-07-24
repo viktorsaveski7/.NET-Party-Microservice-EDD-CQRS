@@ -309,13 +309,35 @@ dotnet run
 
 ---
 
+## Testing
+
+The project includes **88 tests** across 4 test projects: unit tests for handlers, validators, and behaviors; integration tests for the full HTTP controller pipeline.
+
+| Test Suite | Type | Tests | Command |
+|-----------|------|-------|---------|
+| PartyService.Application.Tests | Unit | 31 | `dotnet test PartyService/PartyService.Application.Tests` |
+| GuestService.Application.Tests | Unit | 36 | `dotnet test GuestService/GuestService.Application.Tests` |
+| PartyService.IntegrationTests | Integration | 10 | `dotnet test PartyService/PartyService.IntegrationTests` |
+| GuestService.IntegrationTests | Integration | 11 | `dotnet test GuestService/GuestService.IntegrationTests` |
+
+**Unit tests** (xUnit + Moq): validate handlers, FluentValidation validators, the MediatR validation pipeline behavior, and event handlers in isolation with mocked dependencies.
+
+**Integration tests** (WebApplicationFactory + Moq): spin up the full ASP.NET Core pipeline — controllers, MediatR, FluentValidation, and global exception middleware — testing every endpoint for success, not-found, and validation-failure responses.
+
+Coverage includes:
+- All 5 Party endpoints (Create, Read, Update, Delete, List)
+- All 5 Guest endpoints (Create, Read, Update, Delete, List)
+- PartyCreated/Updated/Deleted event handlers in GuestService
+- Happy path, not found (404), validation failure (422), and ID mismatch (400) scenarios
+
+---
+
 ## Areas for Improvement
 
 ### High Priority
 
 | Area                     | Issue                                               |
 |--------------------------|-----------------------------------------------------|
-| **Tests**                | No unit, integration, or contract tests exist.      |
 | **docker-compose**       | No single command to spin up the full stack.        |
 | **Configuration**        | Database server name and RabbitMQ credentials are hardcoded in `appsettings.json`. Should use environment variables or .NET User Secrets. |
 | **Health checks**        | No `/health` endpoints; YARP has no health-check-based routing. |
@@ -351,13 +373,17 @@ PartyProject/
 │   ├── PartyService.Presentation/       # Controllers, middleware, startup
 │   ├── PartyService.Application/        # CQRS handlers, DTOs, validators, events
 │   ├── PartyService.Domain/             # Entities (Party, OutboxMessage)
-│   └── PartyService.Infrastructure/     # Dapper, Redis, RabbitMQ, Outbox processor, SQL scripts
+│   ├── PartyService.Infrastructure/     # Dapper, Redis, RabbitMQ, Outbox processor, SQL scripts
+│   ├── PartyService.Application.Tests/  # 31 unit tests (xUnit + Moq)
+│   └── PartyService.IntegrationTests/   # 10 integration tests (WebApplicationFactory)
 ├── GuestService/                        # Guest Microservice
 │   ├── GuestService.sln
 │   ├── GuestService.Presentation/       # Controllers, middleware, startup
 │   ├── GuestService.Application/        # CQRS handlers, event handlers, DTOs
 │   ├── GuestService.Domain/             # Entities (Guest, CachedParty)
-│   └── GuestService.Infrastructure/     # EF Core, RabbitMQ consumer, migrations
+│   ├── GuestService.Infrastructure/     # EF Core, RabbitMQ consumer, migrations
+│   ├── GuestService.Application.Tests/  # 36 unit tests (xUnit + Moq)
+│   └── GuestService.IntegrationTests/   # 11 integration tests (WebApplicationFactory)
 ├── PartyEventConsumerService/           # Standalone RabbitMQ consumer (alternative deployment)
 │   ├── Program.cs
 │   └── Dockerfile
